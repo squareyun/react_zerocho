@@ -8,14 +8,13 @@
       src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
       crossorigin
     ></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   </head>
 
   <body>
     <div id="root"></div>
     <!-- 결과: <div id="root"><button>Like</button></div> -->
-    <script>
-      const e = React.createElement;
-
+    <script type="text/babel">
       class LikeButton extends React.Component {
         constructor(props) {
           super(props);
@@ -25,22 +24,28 @@
         }
 
         render() {
-          return e(
-            "button",
-            {
-              onClick: () => {
-                this.setState({ liked: true });
-              },
-
-              type: "submit",
-            },
-            this.state.liked === true ? "Liked" : "Like"
-          ); // <button>Like</button>
+          return (
+            <button
+              type="submit"
+              onClick={() => this.setState({ liked: true })}
+            >
+              {this.state.liked ? "Liked" : "Like"}
+            </button>
+          );
+          // JSX ( JS + XML )
         }
       }
     </script>
-    <script>
-      ReactDOM.render(e(LikeButton), document.querySelector("#root"));
+    <script type="text/babel">
+      ReactDOM.render(
+        <div>
+          <LikeButton />
+          <LikeButton />
+          <LikeButton />
+          <LikeButton />
+        </div>,
+        document.querySelector("#root")
+      );
     </script>
   </body>
 </html>
