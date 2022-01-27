@@ -15,25 +15,29 @@
     <div id="root"></div>
     <script type="text/babel">
       class GuGuDan extends React.Component {
-        constructor(props) {
-          super(props);
-          this.state = {
-            first: Math.ceil(Math.random() * 9),
-            second: Math.ceil(Math.random() * 9),
-            value: "",
-            result: "",
-          };
-        }
+        // class, super, this 안쓰고 이렇게 바로 작성해도 된다. (이렇게 더 많이 함)
+        state = {
+          first: Math.ceil(Math.random() * 9),
+          second: Math.ceil(Math.random() * 9),
+          value: "",
+          result: "",
+        };
 
+        // 무조건 화살표 함수여야 한다. function으로 작성하면 오류
         onSubmit = (e) => {
           e.preventDefault(); // 화면 새로고침 방지
-          var answer = this.state.first * this.state.second;
-          if (parseInt(this.state.value) === answer) {
-            this.setState({
-              result: String(answer) + ".. 정답!",
-              first: Math.ceil(Math.random() * 9),
-              second: Math.ceil(Math.random() * 9),
-              value: "",
+          if (
+            parseInt(this.state.value) ===
+            this.state.first * this.state.second
+          ) {
+            // 예전 값으로 새로운 값을 업데이트할 때는 함수를 사용하자! (평문에는 객체를 써도 무관하다)
+            this.setState((prevState) => {
+              return {
+                result: prevState.value + ".. 정답!",
+                first: Math.ceil(Math.random() * 9),
+                second: Math.ceil(Math.random() * 9),
+                value: "",
+              };
             });
           } else {
             this.setState({
@@ -47,9 +51,10 @@
           this.setState({ value: e.target.value });
         };
 
+        // <React.Fragment를 사용하면 쓸데없는 div 태그를 줄일 수 있다.
         render() {
           return (
-            <div>
+            <React.Fragment>
               <div>
                 {this.state.first} 곱하기 {this.state.second}는?
               </div>
@@ -62,7 +67,7 @@
                 <button>입력!</button>
               </form>
               <div>{this.state.result}</div>
-            </div>
+            </React.Fragment>
           );
         }
       }
